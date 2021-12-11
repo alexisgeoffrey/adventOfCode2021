@@ -2,9 +2,9 @@ import java.io.*;
 
 public class Day2 {
     public static void main(String[] args) throws IOException {
-        BufferedReader input = new BufferedReader(new FileReader("C:/Users/Alexis/dev/adventofcode/day 2/input.txt"));
+        BufferedReader input = new BufferedReader(new FileReader("C:/Users/Alexis/dev/adventofcode/2021/day 2/input.txt"));
         System.out.println(pathReader(input));
-        input = new BufferedReader(new FileReader("C:/Users/Alexis/dev/adventofcode/day 2/input.txt"));
+        input = new BufferedReader(new FileReader("C:/Users/Alexis/dev/adventofcode/2021/day 2/input.txt"));
         System.out.println(aimedPathReader(input));
     }
 

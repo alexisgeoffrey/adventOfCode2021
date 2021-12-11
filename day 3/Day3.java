@@ -3,9 +3,9 @@ import java.util.*;
 
 public class Day3 {
     public static void main(String[] args) throws IOException {
-        var input = new FileReader("C:/Users/Alexis/dev/adventofcode/day 3/input.txt");
+        var input = new FileReader("C:/Users/Alexis/dev/adventofcode/2021/day 3/input.txt");
         System.out.println(powerCalculation(input));
-        input = new FileReader("C:/Users/Alexis/dev/adventofcode/day 3/input.txt");
+        input = new FileReader("C:/Users/Alexis/dev/adventofcode/2021/day 3/input.txt");
         System.out.println(lifeSupportCalculation(input));
     }
 
