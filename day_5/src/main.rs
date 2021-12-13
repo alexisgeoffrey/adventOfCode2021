@@ -2,7 +2,7 @@ use itertools::Itertools;
 use std::{
     collections::HashMap,
     fs::File,
-    io::{self, BufRead, BufReader, Lines}
+    io::{self, BufRead, BufReader, Lines},
 };
 
 const FILE_PATH: &str = "C:/Users/Alexis/dev/adventofcode/2021/day_5/src/input.txt";
@@ -73,12 +73,12 @@ pub fn get_vent_overlap_with_diag(input_file_path: &str) -> u32 {
     );
     let mut map = HashMap::new();
     for pair in coord_v {
-        let x_range: Box<dyn Iterator<Item=u32>> = if pair.start.x <= pair.end.x {
+        let x_range: Box<dyn Iterator<Item = u32>> = if pair.start.x <= pair.end.x {
             Box::new(pair.start.x..=pair.end.x)
         } else {
             Box::new((pair.end.x..=pair.start.x).rev())
         };
-        let y_range: Box<dyn Iterator<Item=u32>> = if pair.start.y <= pair.end.y {
+        let y_range: Box<dyn Iterator<Item = u32>> = if pair.start.y <= pair.end.y {
             Box::new(pair.start.y..=pair.end.y)
         } else {
             Box::new((pair.end.y..=pair.start.y).rev())
