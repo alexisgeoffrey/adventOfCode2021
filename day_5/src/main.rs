@@ -150,9 +150,9 @@ fn format_coordinates(lines: Lines<BufReader<File>>) -> Vec<CoordinatesPair> {
         .flatten()
         .map(|x| {
             x.split(" -> ")
-                .map(|y| y.split(','))
+                .map(|x| x.split(','))
                 .flatten()
-                .map(|z| z.parse::<u32>().unwrap())
+                .map(|x| x.parse::<u32>().unwrap())
                 .collect_tuple::<(u32, u32, u32, u32)>()
                 .unwrap()
         })
