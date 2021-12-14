@@ -1,3 +1,5 @@
+use num_bigint::BigUint;
+use num_traits::{one, zero};
 use std::fs;
 
 const FILE_PATH: &str = "C:/Users/Alexis/dev/adventofcode/2021/day_6/src/input.txt";
@@ -11,33 +13,41 @@ fn main() {
         "Lanternfish after 256 days: {}",
         lanternfish_sim(FILE_PATH, 256)
     );
+    println!(
+        "Lanternfish after 1000 days: {}",
+        lanternfish_sim(FILE_PATH, 1000)
+    );
+    println!(
+        "Lanternfish after 5000 days: {}",
+        lanternfish_sim(FILE_PATH, 5000)
+    );
+    println!(
+        "Lanternfish after 10000 days: {}",
+        lanternfish_sim(FILE_PATH, 10000)
+    );
 }
 
-pub fn lanternfish_sim(file_path: &str, days: u32) -> u128 {
-    let mut colony: [u128; 9] = [0; 9];
-    let f = fs::read_to_string(file_path).expect("Error reading file");
-    for element in f.split(",") {
+pub fn lanternfish_sim(file_path: &str, days: u32) -> BigUint {
+    let mut colony: [BigUint; 9] = Default::default();
+    let input = fs::read_to_string(file_path).expect("Error reading file");
+    for element in input.split(',') {
         let num = element.parse::<usize>().unwrap();
-        colony[num] += 1;
+        colony[num] += one::<BigUint>();
     }
 
     for _day in 0..days {
-        let mut new_fish = 0;
-        if colony[0] > 0 {
-            new_fish = colony[0];
-            colony[0] = 0;
+        let mut new_fish = zero();
+        if colony[0] > one() {
+            new_fish = colony[0].clone();
+            colony[0] = zero();
         }
-        for nums in 1..colony.len() {
-            colony[nums - 1] = colony[nums];
-            colony[nums] = 0;
+        for num in 1..colony.len() {
+            colony[num - 1] = colony[num].clone();
+            colony[num] = zero();
         }
-        colony[8] = new_fish;
+        colony[8] = new_fish.clone();
         colony[6] += new_fish;
     }
 
-    let mut sum = 0;
-    for i in 0..colony.len() {
-        sum += colony[i];
-    }
-    sum
+    colony.iter().sum()
 }
