@@ -1,3 +1,4 @@
 *.txt
 .vscode
 target
+.elixir_ls
