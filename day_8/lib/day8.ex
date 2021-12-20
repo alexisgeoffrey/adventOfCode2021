@@ -37,8 +37,6 @@ defmodule Day8 do
     |> Stream.map(fn line ->
       l = String.split(line, "|")
 
-      # IO.puts(l)
-
       oneAndFour =
         hd(l)
         |> String.split()
