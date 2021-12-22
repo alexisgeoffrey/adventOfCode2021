@@ -3,9 +3,9 @@ import java.util.ArrayList;
 
 public class Day4 {
     public static void main(String[] args) throws IOException {
-        var input = new FileReader("C:/Users/Alexis/dev/adventofcode/2021/day 4/input.txt");
+        var input = new FileReader("./input.txt");
         System.out.println(bingo(input));
-        input = new FileReader("C:/Users/Alexis/dev/adventofcode/2021/day 4/input.txt");
+        input = new FileReader("./input.txt");
         System.out.println(bingoLose(input));
     }
 

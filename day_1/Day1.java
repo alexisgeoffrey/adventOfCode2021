@@ -3,9 +3,9 @@ import java.util.ArrayList;
 
 public class Day1 {
     public static void main(String[] args) throws IOException {
-        BufferedReader input = new BufferedReader(new FileReader("C:/Users/Alexis/dev/adventofcode/2021/day 1/input.txt"));
+        BufferedReader input = new BufferedReader(new FileReader("./input.txt"));
         System.out.println(countDepthIncrease(input));
-        input = new BufferedReader(new FileReader("C:/Users/Alexis/dev/adventofcode/2021/day 1/input.txt"));
+        input = new BufferedReader(new FileReader("./input.txt"));
         System.out.println(countSlidingDepthIncrease(input));
     }
 
