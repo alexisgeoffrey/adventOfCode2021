@@ -1,11 +1,14 @@
+package day_3;
+
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Day3 {
-    public static void main(String[] args) throws IOException {
-        var input = new FileReader("./input.txt");
+    public static void main(String[] args) throws IOException, InterruptedException {
+        var input = new FileReader("day_3/input.txt");
         System.out.println(powerCalculation(input));
-        input = new FileReader("./input.txt");
+        input = new FileReader("day_3/input.txt");
         System.out.println(lifeSupportCalculation(input));
     }
 
@@ -13,15 +16,15 @@ public class Day3 {
         var inputFile = new BufferedReader(input);
         var powerCount = new ArrayList<Integer>();
         String currentLine = inputFile.readLine();
-        for(int x = 0; x < currentLine.length(); x++) {
+        for (int x = 0; x < currentLine.length(); x++) {
             powerCount.add(Integer.parseInt(String.valueOf(currentLine.charAt(x))));
         }
         currentLine = inputFile.readLine();
         int numLines = 1;
 
-        while(currentLine != null) {
+        while (currentLine != null) {
             numLines++;
-            for(int x = 0; x < currentLine.length(); x++) {
+            for (int x = 0; x < currentLine.length(); x++) {
                 powerCount.set(x, powerCount.get(x) + Integer.parseInt(String.valueOf(currentLine.charAt(x))));
             }
             currentLine = inputFile.readLine();
@@ -29,12 +32,11 @@ public class Day3 {
         String stringGamma = "";
         String stringEpsilon = "";
 
-        for(int x = 0; x < powerCount.size(); x++) {
-            if(powerCount.get(x) > (numLines / 2)) {
+        for (int x = 0; x < powerCount.size(); x++) {
+            if (powerCount.get(x) > (numLines / 2)) {
                 stringGamma += "1";
                 stringEpsilon += "0";
-            }
-            else {
+            } else {
                 stringGamma += "0";
                 stringEpsilon += "1";
             }
@@ -42,67 +44,54 @@ public class Day3 {
         Long gamma = Long.parseLong(stringGamma, 2);
         Long epsilon = Long.parseLong(stringEpsilon, 2);
         Long finalNum = gamma * epsilon;
-        
 
         return finalNum;
     }
 
-    public static Long lifeSupportCalculation(FileReader input) throws IOException {
+    public static Long lifeSupportCalculation(FileReader input) throws IOException, InterruptedException {
         var inputFile = new BufferedReader(input);
-        var gammaMap = new HashMap<String, Integer>();
-        var epsilonMap = new HashMap<String, Integer>();
+        var gammaSet = new HashSet<String>();
+        var epsilonSet = new HashSet<String>();
         String currentLine = inputFile.readLine();
         int lineLength = currentLine.length();
 
-        while(currentLine != null) {
-            gammaMap.put(currentLine, 1);
-            epsilonMap.put(currentLine, 1);
+        while (currentLine != null) {
+            gammaSet.add(currentLine);
+            epsilonSet.add(currentLine);
             currentLine = inputFile.readLine();
         }
-        
-        for(int i = 0; i < lineLength; i++) {
-            int gammaPowerCount = 0;
-            var gammaOccurrenceIterator = gammaMap.keySet().iterator();
-            while(gammaOccurrenceIterator.hasNext()) {
-                currentLine = gammaOccurrenceIterator.next();
-                int currentDigit = Integer.parseInt(String.valueOf(currentLine.charAt(i)));
-                if(currentDigit == 1) gammaPowerCount++;
-                else gammaPowerCount--;
-            }
-            int epsilonPowerCount = 0;
-            var epsilonOccurrenceIterator = epsilonMap.keySet().iterator();
-            while(epsilonOccurrenceIterator.hasNext()) {
-                currentLine = epsilonOccurrenceIterator.next();
-                int currentDigit = Integer.parseInt(String.valueOf(currentLine.charAt(i)));
-                if(currentDigit == 1) epsilonPowerCount++;
-                else epsilonPowerCount--;
-            }
 
-            String stringGamma = "";
-            String stringEpsilon = "";
-
-            if(gammaPowerCount >= 0) stringGamma = "1";
-            else stringGamma = "0";
-
-            if(epsilonPowerCount >= 0) stringEpsilon = "0";
-            else stringEpsilon = "1";
-
-            var gammaIterator = gammaMap.keySet().iterator();
-            while(gammaIterator.hasNext() && gammaMap.size() > 1) {
-                currentLine = gammaIterator.next();
-                if(!stringGamma.equals(String.valueOf(currentLine.charAt(i)))) {
-                    gammaIterator.remove();
-                }
-            }
-            var epsilonIterator = epsilonMap.keySet().iterator();
-            while(epsilonIterator.hasNext() && epsilonMap.size() > 1) {
-                currentLine = epsilonIterator.next();
-                if(!stringEpsilon.equals(String.valueOf(currentLine.charAt(i)))) {
-                    epsilonIterator.remove();
-                }
-            }
+        for (int x = 0; x < lineLength; x++) {
+            final int i = x;
+            Thread gamma = new Thread(() -> calcSet(gammaSet, true, i));
+            Thread epsilon = new Thread(() -> calcSet(epsilonSet, false, i));
+            gamma.start();
+            epsilon.start();
+            gamma.join();
+            epsilon.join();
         }
 
-        return Long.parseLong(epsilonMap.keySet().iterator().next(), 2) * Long.parseLong(gammaMap.keySet().iterator().next(), 2);
+        return Long.parseLong(gammaSet.iterator().next(), 2) * Long.parseLong(epsilonSet.iterator().next(), 2);
+
+    }
+
+    private static void calcSet(Set<String> set, boolean isGamma, int index) {
+        var powerCount = new AtomicInteger();
+        final int i = index;
+
+        set.parallelStream().forEach(
+                (line) -> powerCount
+                        .addAndGet(Integer.parseInt(String.valueOf(line.charAt(i))) == 1 ? 1 : -1));
+
+        String string = powerCount.get() >= 0 ? isGamma ? "1" : "0" : isGamma ? "0" : "1";
+
+        var iter = set.iterator();
+
+        while (iter.hasNext() && set.size() > 1) {
+            if (!String.valueOf(iter.next().charAt(i)).equals(string))
+                iter.remove();
+        }
+        if (set.size() == 1)
+            return;
     }
 }

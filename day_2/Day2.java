@@ -1,10 +1,12 @@
+package day_2;
+
 import java.io.*;
 
 public class Day2 {
     public static void main(String[] args) throws IOException {
-        BufferedReader input = new BufferedReader(new FileReader("./input.txt"));
+        var input = new BufferedReader(new FileReader("day_2/input.txt"));
         System.out.println(pathReader(input));
-        input = new BufferedReader(new FileReader("./input.txt"));
+        input = new BufferedReader(new FileReader("day_2/input.txt"));
         System.out.println(aimedPathReader(input));
     }
 
@@ -13,7 +15,7 @@ public class Day2 {
         int depth = 0;
         int position = 0;
 
-        while(currentLine != null) {
+        while (currentLine != null) {
             String[] lineTokens = currentLine.split(" ");
             int value = Integer.parseInt(lineTokens[1]);
             switch (lineTokens[0]) {
@@ -41,7 +43,7 @@ public class Day2 {
         int position = 0;
         int aim = 0;
 
-        while(currentLine != null) {
+        while (currentLine != null) {
             String[] lineTokens = currentLine.split(" ");
             int value = Integer.parseInt(lineTokens[1]);
             switch (lineTokens[0]) {
