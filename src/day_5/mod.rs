@@ -5,16 +5,6 @@ use std::{
     io::{self, BufRead},
 };
 
-const FILE_PATH: &str = "C:/Users/Alexis/dev/adventofcode/2021/day_5/src/input.txt";
-
-fn main() {
-    println!(
-        "Vent overlap: {}\nVent overlap with diagonals: {}",
-        get_vent_overlap(FILE_PATH),
-        get_vent_overlap_with_diag(FILE_PATH)
-    );
-}
-
 #[derive(Eq, PartialEq, Hash)]
 struct Coordinates {
     x: u32,

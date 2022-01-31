@@ -1,5 +1,5 @@
 [package]
-name = "day_5"
+name = "advent_of_code_2021"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,3 +7,5 @@ edition = "2021"
 
 [dependencies]
 itertools = "0.10.3"
+num-bigint = "0.4.3"
+num-traits = "0.2.14"

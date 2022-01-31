@@ -2,31 +2,6 @@ use num_bigint::BigUint;
 use num_traits::{one, zero};
 use std::fs;
 
-const FILE_PATH: &str = "C:/Users/Alexis/dev/adventofcode/2021/day_6/src/input.txt";
-
-fn main() {
-    println!(
-        "Lanternfish after 80 days: {}",
-        lanternfish_sim(FILE_PATH, 80)
-    );
-    println!(
-        "Lanternfish after 256 days: {}",
-        lanternfish_sim(FILE_PATH, 256)
-    );
-    println!(
-        "Lanternfish after 1000 days: {}",
-        lanternfish_sim(FILE_PATH, 1000)
-    );
-    println!(
-        "Lanternfish after 5000 days: {}",
-        lanternfish_sim(FILE_PATH, 5000)
-    );
-    println!(
-        "Lanternfish after 10000 days: {}",
-        lanternfish_sim(FILE_PATH, 10000)
-    );
-}
-
 pub fn lanternfish_sim(file_path: &str, days: u32) -> BigUint {
     let mut colony: [BigUint; 9] = Default::default();
     let input = fs::read_to_string(file_path).expect("Error reading file");
