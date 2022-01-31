@@ -1,5 +1,5 @@
 mod day_1;
-// mod day_2;
+mod day_2;
 // mod day_3;
 // mod day_4;
 mod day_5;
@@ -12,6 +12,14 @@ fn main() {
         "Depth increase: {}\nSliding depth increase: {}",
         day_1::count_depth_increase(&path("1")),
         day_1::count_sliding_depth_increase(&path("1"))
+    );
+    println!();
+
+    println!("Day 2:");
+    println!(
+        "Multiplied position and depth: {}\nMultiplied aimed position and depth: {}",
+        day_2::path_reader(&path("2")),
+        day_2::aimed_path_reader(&path("2"))
     );
     println!();
 
