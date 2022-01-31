@@ -22,15 +22,19 @@ pub fn get_vent_overlap(input_file_path: &str) -> usize {
     );
     let mut map = HashMap::new();
     let mut tabulate = |x_stable, stable_coord, range| {
-        let x = stable_coord;
-        for y in range {
+        for coord in range {
             let key = if x_stable {
-                Coordinates { x, y }
+                Coordinates {
+                    x: stable_coord,
+                    y: coord,
+                }
             } else {
-                Coordinates { x: y, y: x }
+                Coordinates {
+                    x: coord,
+                    y: stable_coord,
+                }
             };
-            let i: &mut u32 = map.entry(key).or_insert(0);
-            *i += 1;
+            *map.entry(key).or_insert(0) += 1;
         }
     };
 
@@ -42,7 +46,8 @@ pub fn get_vent_overlap(input_file_path: &str) -> usize {
         }
     }
 
-    map.values().filter(|i| **i >= 2).count()
+    map.values()
+        .fold(0, |acc, vent| if *vent >= 2 { acc + 1 } else { acc })
 }
 
 pub fn get_vent_overlap_with_diag(input_file_path: &str) -> usize {
@@ -51,15 +56,19 @@ pub fn get_vent_overlap_with_diag(input_file_path: &str) -> usize {
     );
     let mut map = HashMap::new();
     let tabulate = |x_stable, stable_coord, range, map: &mut HashMap<Coordinates, u32>| {
-        let x = stable_coord;
-        for y in range {
+        for coord in range {
             let key = if x_stable {
-                Coordinates { x, y }
+                Coordinates {
+                    x: stable_coord,
+                    y: coord,
+                }
             } else {
-                Coordinates { x: y, y: x }
+                Coordinates {
+                    x: coord,
+                    y: stable_coord,
+                }
             };
-            let i = map.entry(key).or_insert(0);
-            *i += 1;
+            *map.entry(key).or_insert(0) += 1;
         }
     };
 
@@ -82,8 +91,7 @@ pub fn get_vent_overlap_with_diag(input_file_path: &str) -> usize {
             for (x, y) in
                 get_range(pair.start.x, pair.end.x).zip_eq(get_range(pair.start.y, pair.end.y))
             {
-                let i = map.entry(Coordinates { x, y }).or_insert(0);
-                *i += 1;
+                *map.entry(Coordinates { x, y }).or_insert(0) += 1;
             }
         }
     }
@@ -123,17 +131,18 @@ fn get_range(start: u32, end: u32) -> Box<dyn Iterator<Item = u32>> {
 
 fn format_coordinates(lines: io::Lines<io::BufReader<File>>) -> Vec<CoordinatesPair> {
     lines
-        .flatten()
         .map(|s| {
-            s.split(|c: char| !c.is_numeric())
+            let i = s
+                .unwrap()
+                .split(|c: char| !c.is_numeric())
                 .filter(|s| !s.is_empty())
                 .map(|s| s.parse::<u32>().unwrap())
-                .collect_tuple::<(u32, u32, u32, u32)>()
-                .unwrap()
-        })
-        .map(|i| CoordinatesPair {
-            start: Coordinates { x: i.0, y: i.1 },
-            end: Coordinates { x: i.2, y: i.3 },
+                .collect_tuple::<(_, _, _, _)>()
+                .unwrap();
+            CoordinatesPair {
+                start: Coordinates { x: i.0, y: i.1 },
+                end: Coordinates { x: i.2, y: i.3 },
+            }
         })
         .collect_vec()
 }
